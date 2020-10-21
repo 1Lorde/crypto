@@ -9,7 +9,7 @@
 #include <iostream>
 
 #ifdef _WIN_64
-    #include <conio.h>
+#include <conio.h>
 #endif
 
 using namespace std;
@@ -21,28 +21,28 @@ ChineseRemainderTheorem chineseRemainder;
 
 //clear console
 void clearOutput() {
-    #ifdef _WIN64
-        system("cls");
-    #endif
+#ifdef _WIN64
+    system("cls");
+#endif
 
-    #ifdef linux
-        system("clear");
-    #endif
+#ifdef linux
+    system("clear");
+#endif
 }
 
 //wait for user input
-void pause(){
-    #ifdef _WIN64
-        cout << endl << endl << "Press <ENTER> to continue..";
-        getch();
-    #endif
- 
-    #ifdef linux
-        cout << endl << endl << "Press <ENTER> to continue..";
-        int ch = getchar();
-        while (ch != '\n')
-            ch = getchar();
-    #endif   
+void pause() {
+#ifdef _WIN64
+    cout << endl << endl << "Press <ENTER> to continue..";
+    getch();
+#endif
+
+#ifdef linux
+    cout << endl << endl << "Press <ENTER> to continue..";
+    int ch = getchar();
+    while (ch != '\n')
+        ch = getchar();
+#endif
 }
 
 //handle 32 bit numbers input
@@ -92,7 +92,7 @@ void Demo::demoNumbers() {
         cout << "(a/b) mod n = " << div << endl;
         cout << "(a^-1) mod n = " << inverse;
     }
-    catch (NotSameModuloException& exception) {
+    catch (NotSameModuloException &exception) {
         cout << exception.what();
         getchar();
     }
@@ -155,7 +155,39 @@ void Demo::demoSolovayStrassenPrimalityTest() {
     bool result = primalityTest.solovayStrassenVerbose(n, k);
 
     if (result) {
-        cout << ">>> ANSWER: " << n << " is prime." << endl;
+        cout << ">>> ANSWER: " << n << " maybe prime." << endl;
+    } else {
+        cout << ">>> ANSWER: " << n << " isn`t prime." << endl;
+    }
+    cout << "---------------------------";
+}
+
+void Demo::demoFermatPrimalityTest() {
+    cout << endl << "****** Fermat primality test ******" << endl << endl;
+    long long n = inputBigInteger("n");
+    int k = inputInteger("k");
+
+    cout << endl << "---------------------------" << endl;
+    bool result = primalityTest.fermatVerbose(n, k);
+
+    if (result) {
+        cout << ">>> ANSWER: " << n << " maybe prime." << endl;
+    } else {
+        cout << ">>> ANSWER: " << n << " isn`t prime." << endl;
+    }
+    cout << "---------------------------";
+}
+
+void Demo::demoLehmannPrimalityTest() {
+    cout << endl << "****** Lehmann primality test ******" << endl << endl;
+    long long n = inputBigInteger("n");
+    int k = inputInteger("k");
+
+    cout << endl << "---------------------------" << endl;
+    bool result = primalityTest.lehmannVerbose(n, k);
+
+    if (result) {
+        cout << ">>> ANSWER: " << n << " maybe prime." << endl;
     } else {
         cout << ">>> ANSWER: " << n << " isn`t prime." << endl;
     }
@@ -186,26 +218,50 @@ void Demo::demoChineseRemainderTheorem() {
     }
 }
 
+void Demo::demoCarmichaelNumbers() {
+    cout << endl << "****** Carmichael Numbers in range [a,b] ******" << endl << endl;
+    long long a = inputBigInteger("a");
+    long long b = inputBigInteger("b");
+    int k = 20;
+
+    cout << endl << "---------------------------" << endl;
+    cout << "Results:" << endl;
+
+    int count = 0;
+
+    for (int i = a; i <= b; ++i) {
+        bool fermat = primalityTest.fermat(i, k);
+        bool lehmann = primalityTest.lehmann(i, k);
+
+        if (fermat != lehmann){
+            cout << i << " " ;
+            count++;
+        }
+    }
+    cout << endl << endl << "Find " << count << " numbers, with accuracy (1-2^-" << k << ").";
+    cout << endl <<  "---------------------------";
+}
+
 
 //
 //interactions with user
 //
-void Demo::showMenu() {
+void Demo::showMainMenu() {
     clearOutput();
     cout << "****** Demonstration Menu ******" << endl << endl;
     cout << "1. Numbers demo" << endl;
-    cout << "2. Legendre demo" << endl;
-    cout << "3. Jacobi demo" << endl;
-    cout << "4. Solovay-Strassen primality test demo" << endl;
+    cout << "2. Legendre symbol demo" << endl;
+    cout << "3. Jacobi symbol demo" << endl;
+    cout << "4. Primality tests demo" << endl;
     cout << "5. Chinese Remainder Theorem demo" << endl;
     cout << "0. Exit" << endl << endl;
 }
 
-void Demo::handleInput() {
+void Demo::handleInputInMainMenu() {
     int choice = -1;
 
     while (choice != EXIT) {
-        showMenu();
+        showMainMenu();
         try {
             choice = inputInteger("your choice");
         }
@@ -226,8 +282,8 @@ void Demo::handleInput() {
                 demoJacobi();
                 break;
             }
-            case SOLOVAY_STRASSEN_DEMO: {
-                demoSolovayStrassenPrimalityTest();
+            case PRIMALITY_TESTS_DEMO: {
+                handleInputInPrimalityTestsMenu();
                 break;
             }
             case CHINESE_REMAINDER_THEOREM_DEMO: {
@@ -238,15 +294,61 @@ void Demo::handleInput() {
             default:
                 break;
         }
-        pause();
+        if (choice != PRIMALITY_TESTS_DEMO)
+            pause();
     }
 
 }
 
-void Demo::startDemo(){
+void Demo::showPrimalityTestsMenu() {
+    clearOutput();
+    cout << "****** Primality Tests Menu ******" << endl << endl;
+    cout << "1. Solovay-Strassen demo" << endl;
+    cout << "2. Fermat demo" << endl;
+    cout << "3. Lehmann demo" << endl;
+    cout << "0. Back" << endl << endl;
+}
+
+void Demo::handleInputInPrimalityTestsMenu() {
+    int choice = -1;
+
+    while (choice != BACK) {
+        showPrimalityTestsMenu();
+        try {
+            choice = inputInteger("your choice");
+        }
+        catch (...) {
+            continue;
+        }
+        clearOutput();
+        switch (choice) {
+            case SOLOVAY_STRASSEN: {
+                demoSolovayStrassenPrimalityTest();
+                break;
+            }
+            case FERMAT: {
+                demoFermatPrimalityTest();
+                break;
+            }
+            case LEHMANN: {
+                demoLehmannPrimalityTest();
+                break;
+            }
+
+            default:
+                break;
+        }
+        if (choice != BACK)
+            pause();
+    }
+}
+
+void Demo::startDemo() {
     clearOutput();
     cout << "### This program developed by Vlad Savchuk." << endl;
     pause();
-    handleInput();
+    handleInputInMainMenu();
 }
+
+
 

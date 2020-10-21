@@ -11,7 +11,6 @@
  */
 class PrimalityTest {
 private:
-    ModularArithmetic moduloMath;
     Symbols symbols;
 
     //return random Number in range (lower, upper)
@@ -23,6 +22,18 @@ public:
 
     //Solovay–Strassen primality test with hints
     bool solovayStrassenVerbose(long long n, int k);
+
+    //Fermat primality test without hints
+    bool fermat(long long n, int k);
+
+    //Fermat primality test with hints
+    bool fermatVerbose(long long n, int k);
+
+    //Lehmann`s primality test without hints
+    bool lehmann(long long n, int k);
+
+    //Lehmann`s primality test with hints
+    bool lehmannVerbose(long long n, int k);
 };
 
 #endif //SYMBOLS_PRIMALITYTEST_H

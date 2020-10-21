@@ -9,19 +9,29 @@
 class Demo {
 private:
     //enumeration for CLI menu
-    enum MenuEntries {
-        EXIT, NUMBERS_DEMO, LEGENDRE_DEMO, JACOBI_DEMO, SOLOVAY_STRASSEN_DEMO, CHINESE_REMAINDER_THEOREM_DEMO
+    enum MainMenuEntries {
+        EXIT, NUMBERS_DEMO, LEGENDRE_DEMO, JACOBI_DEMO, PRIMALITY_TESTS_DEMO, CHINESE_REMAINDER_THEOREM_DEMO
+    };
+
+    enum PrimalityTestsMenuEntries {
+        BACK, SOLOVAY_STRASSEN, FERMAT, LEHMANN
     };
 
 public:
-    //method-wrapper for handleInput()
+    //method-wrapper for handleInputInMainMenu()
     static void startDemo();
 
-    //show menu with available demos in console
-    static void showMenu();
+    //show Main menu with available demos in console
+    static void showMainMenu();
 
-    //handle user choice and call specific demonstration function
-    static void handleInput();
+    //show Primality tests menu with available demos in console
+    static void showPrimalityTestsMenu();
+
+    //handle user choice in Main menu and call specific demonstration function
+    static void handleInputInMainMenu();
+
+    //handle user choice in Primality tests menu and call specific demonstration function
+    static void handleInputInPrimalityTestsMenu();
 
     //demonstrate basic modulus operations with Numbers
     static void demoNumbers();
@@ -35,8 +45,17 @@ public:
     //demonstrate Solovay-Strassen primality test
     static void demoSolovayStrassenPrimalityTest();
 
+    //demonstrate Solovay-Strassen primality test
+    static void demoFermatPrimalityTest();
+
+    //demonstrate Solovay-Strassen primality test
+    static void demoLehmannPrimalityTest();
+
     //demonstrate Chinese Remainder Theorem
     static void demoChineseRemainderTheorem();
+
+    //find Carmichael Numbers in defined range
+    static void demoCarmichaelNumbers();
 };
 
 
