@@ -10,7 +10,7 @@ using namespace std;
 
 //find partial solution for two equations (Numbers)
 long long ChineseRemainderTheorem::getPartialSolution(Number num1, Number num2) {
-    if (!ModularArithmetic::gcd(num1.getN(), num2.getN()))
+    if (ModularArithmetic::gcd(num1.getN(), num2.getN()) != 1)
         throw NoSolutionsException();
 
     long long x1 = num1.getA();

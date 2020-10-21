@@ -91,6 +91,9 @@ long long ModularArithmetic::unsignedMod(long long a, long long p) {
 
 //find big powers of number with modulo (64 bit)
 long long ModularArithmetic::moduloPow(long long x, long long y, long long mod) {
+    if (y == 0)
+        return 1 % mod;
+
     list<long long> multipliers = {};
     while (y != 1) {
         if (y % 2 != 0)
