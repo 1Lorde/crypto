@@ -88,12 +88,12 @@ long long Symbols::legendreVerbose(long long a, long long p) {
     }
 
     if (a > p) {
-        cout << endl << "a = " << a << " n " << p << " = " << a % p << endl;
+        cout << endl << "a = " << a << " mod " << p << " = " << a % p << endl;
         a = a % p;
     }
 
     if (a % p == 0) {
-        cout << "L(" << a << "," << p << ") = " << 0 << ", \t\tbecause: a n p = 0." << endl;
+        cout << "L(" << a << "," << p << ") = " << 0 << ", \t\tbecause: a mod p = 0." << endl;
         return 0;
     }
 

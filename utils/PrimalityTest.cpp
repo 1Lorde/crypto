@@ -37,7 +37,7 @@ bool PrimalityTest::solovayStrassen(long long n, int k) {
         if (ModularArithmetic::gcd(a, n) > 1)
             return false;
 
-        long long expr1 = ModularArithmetic::moduloPow(a, (n - 1) / 2, n);
+        long long expr1 = ModularArithmetic::hornerPow(a, (n - 1) / 2, n);
         long long expr2 = ModularArithmetic::unsignedMod(symbols.jacobi(a, n), n);
         if (expr1 != expr2)
             return false;
@@ -64,7 +64,7 @@ bool PrimalityTest::solovayStrassenVerbose(long long n, int k) {
             return false;
         }
 
-        long long expr1 = ModularArithmetic::moduloPow(a, (n - 1) / 2, n);
+        long long expr1 = ModularArithmetic::hornerPow(a, (n - 1) / 2, n);
         long long expr2 = ModularArithmetic::unsignedMod(symbols.jacobi(a, n), n);
         if (expr1 != expr2) {
             cout << "a^[(n - 1)/2] != J(a,n) (n n)." << endl;
@@ -85,7 +85,7 @@ bool PrimalityTest::fermat(long long n, int k) {
         while (ModularArithmetic::gcd(a, n) != 1)
             a = getRandomNumber(1, n);
 
-        long long result = ModularArithmetic::moduloPow(a, n-1, n);
+        long long result = ModularArithmetic::hornerPow(a, n-1, n);
 
         if (result != 1)
             return false;
@@ -103,7 +103,7 @@ bool PrimalityTest::fermatVerbose(long long int n, int k) {
         while (ModularArithmetic::gcd(a, n) != 1)
             a = getRandomNumber(1, n);
 
-        long long result = ModularArithmetic::moduloPow(a, n-1, n);
+        long long result = ModularArithmetic::hornerPow(a, n-1, n);
 
         if (result != 1)
             return false;
@@ -120,7 +120,7 @@ bool PrimalityTest::lehmann(long long n, int k) {
     for (int i = 0; i < k; ++i) {
         long long a = getRandomNumber(1, n-1);
 
-        long long result = ModularArithmetic::moduloPow(a, (n-1)/2, n);
+        long long result = ModularArithmetic::hornerPow(a, (n-1)/2, n);
 
         if (abs(result) != 1 and result != n-1)
             return false;
@@ -137,7 +137,7 @@ bool PrimalityTest::lehmannVerbose(long long int n, int k) {
     for (int i = 0; i < k; ++i) {
         long long a = getRandomNumber(1, n-1);
 
-        long long result = ModularArithmetic::moduloPow(a, (n-1)/2, n);
+        long long result = ModularArithmetic::hornerPow(a, (n-1)/2, n);
 
         if (abs(result) != 1 and result != n-1)
             return false;

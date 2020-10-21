@@ -10,11 +10,26 @@ class Demo {
 private:
     //enumeration for CLI menu
     enum MainMenuEntries {
-        EXIT, NUMBERS_DEMO, LEGENDRE_DEMO, JACOBI_DEMO, PRIMALITY_TESTS_DEMO, CHINESE_REMAINDER_THEOREM_DEMO
+        EXIT,
+        NUMBERS_DEMO,
+        SYMBOLS_DEMO,
+        PRIMALITY_TESTS_DEMO,
+        CARMICHAEL_NUMBERS_DEMO,
+        HORNER_METHOD_DEMO,
+        CHINESE_REMAINDER_THEOREM_DEMO,
+    };
+
+    enum SymbolsMenuEntries {
+        RETURN_FROM_SYMBOLS,
+        LEGENDRE_DEMO,
+        JACOBI_DEMO,
     };
 
     enum PrimalityTestsMenuEntries {
-        BACK, SOLOVAY_STRASSEN, FERMAT, LEHMANN
+        RETURN_FROM_PRIMALITY_TESTS,
+        SOLOVAY_STRASSEN,
+        FERMAT,
+        LEHMANN
     };
 
 public:
@@ -24,11 +39,17 @@ public:
     //show Main menu with available demos in console
     static void showMainMenu();
 
+    //show Symbols menu with available demos in console
+    static void showSymbolsMenu();
+
     //show Primality tests menu with available demos in console
     static void showPrimalityTestsMenu();
 
     //handle user choice in Main menu and call specific demonstration function
     static void handleInputInMainMenu();
+
+    //handle user choice in Symbols menu and call specific demonstration function
+    static void handleInputInSymbolsMenu();
 
     //handle user choice in Primality tests menu and call specific demonstration function
     static void handleInputInPrimalityTestsMenu();
@@ -56,6 +77,9 @@ public:
 
     //find Carmichael Numbers in defined range
     static void demoCarmichaelNumbers();
+
+    //find big powers using Horner`s method
+    static void demoHornerMethod();
 };
 
 

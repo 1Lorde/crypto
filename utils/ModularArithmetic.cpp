@@ -3,11 +3,39 @@
 //
 
 #include <tuple>
+#include <algorithm>
+#include <iostream>
 #include "ModularArithmetic.h"
 #include "chrono"
 #include "random"
 
 using namespace std;
+
+//convert decimal number to binary
+string ModularArithmetic::decimalToBinary(long long decimal) {
+    string result;
+    while (decimal != 0){
+        long long remainder = decimal % 2;
+        if (remainder)
+            result += "1";
+        else
+            result += "0";
+        decimal /= 2;
+    }
+    reverse(result.begin(), result.end());
+
+    return result;
+}
+
+//find non-negative n (64 bit)
+long long ModularArithmetic::unsignedMod(long long a, long long p) {
+    long long res = a % p;
+    while (res < 0) {
+        res = p + res;
+    }
+
+    return res;
+}
 
 //find smallest divisor of Number (64 bit)
 long long ModularArithmetic::getSmallestDivisor(long long n) {
@@ -79,42 +107,7 @@ tuple<long, long> ModularArithmetic::extendedEuclideanAlgorithm(long r1, long r2
     return make_tuple(s1, t1);
 }
 
-//find non-negative n (64 bit)
-long long ModularArithmetic::unsignedMod(long long a, long long p) {
-    long long res = a % p;
-    while (res < 0) {
-        res = p + res;
-    }
-
-    return res;
-}
-
-//find big powers of number with modulo (64 bit)
-long long ModularArithmetic::moduloPow(long long x, long long y, long long mod) {
-    if (y == 0)
-        return 1 % mod;
-
-    list<long long> multipliers = {};
-    while (y != 1) {
-        if (y % 2 != 0)
-            multipliers.push_back(x);
-        x = x * x;
-        y = y / 2;
-        if (x > mod)
-            x = x % mod;
-    }
-
-    for (long long m : multipliers) {
-        x *= m;
-
-        if (x > mod)
-            x = x % mod;
-    }
-
-    return x;
-}
-
-//find multiplication inverse of element (64 bit)
+//find multiplication inverse of element via Extended Euclidean algorithm (64 bit)
 long long ModularArithmetic::findInverseElement(long long int a, long long int p) {
     long long q = 0;
     long long r1 = p;
@@ -140,6 +133,63 @@ long long ModularArithmetic::findInverseElement(long long int a, long long int p
     }
 }
 
+//find big power of Number with modulo via Horner`s method
+long long ModularArithmetic::hornerPow(long long x, long long y, long long mod) {
+    string power = decimalToBinary(y);
+    reverse(power.begin(), power.end());
+
+    long squares [power.length()];
+    squares[0] = x;
+
+    for (int i = 1; i < power.length(); ++i)
+        squares[i] = unsignedMod(pow(squares[i-1], 2), mod);
+
+    long long result = 1;
+    for (int i = 0; i < power.length(); ++i){
+        long partialCalc = squares[i] * (power[i] - '0');
+        result *= partialCalc ? partialCalc : 1;
+        result = unsignedMod(result, mod);
+    }
+
+    return result;
+}
+
+//find big power of Number with modulo via Horner`s method verbosely
+long long ModularArithmetic::hornerPowVerbose(long long x, long long y, long long mod) {
+    string power = decimalToBinary(y);
+    cout << endl << "1) Converting decimal pow " << y << " to binary: (" << y << ")_10 --> (" << power << ")_2" << endl;
+    reverse(power.begin(), power.end());
+
+    cout << endl << "2) Building table:" << endl;
+    cout << "i  |\t";
+    for (int i = 0; i < power.length(); ++i)
+        cout << i << "\t";
+
+    long squares [power.length()];
+    squares[0] = x;
+    for (int i = 1; i < power.length(); ++i)
+        squares[i] = unsignedMod(pow(squares[i-1], 2), mod);
+
+    cout << endl << "2  |\t";
+    for (int i = 0; i < power.length(); ++i)
+        cout << squares[i] << "\t";
+
+    cout << endl << "Xi |\t";
+    for (int i = 0; i < power.length(); ++i)
+        cout << power[i] - '0' << "\t";
+
+    cout << endl << endl << "3) Calculate result:" << endl << "y= ";
+
+    long long result = 1;
+    for (int i = 0; i < power.length(); ++i){
+        long partialCalc = squares[i] * (power[i] - '0');
+        cout << partialCalc << " * ";
+        result *= partialCalc ? partialCalc : 1;
+        result = unsignedMod(result, mod);
+    }
+    cout << "\b\b" << "" << "= " << result << " (mod " << mod << ").";
+
+    return result;}
 
 
 

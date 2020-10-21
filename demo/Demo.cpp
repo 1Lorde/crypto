@@ -112,7 +112,7 @@ void Demo::demoLegendre() {
 
         cout << endl << endl << "---------------------------" << endl;
         cout << ">>> ANSWER: L(" << a << "," << p << ") = " << result << "." << endl;
-        cout << "x^2 == " << a << " n " << p << " - ";
+        cout << "x^2 == " << a << " mod " << p << " - ";
         if (result == 1) {
             cout << "have solutions.";
         } else if (result == -1) {
@@ -135,7 +135,7 @@ void Demo::demoJacobi() {
 
     cout << endl << endl << "---------------------------" << endl;
     cout << ">>> ANSWER: J(" << a << "," << P << ") = " << result << "." << endl;
-    cout << "x^2 == " << a << " n " << P << " - ";
+    cout << "x^2 == " << a << " mod " << P << " - ";
     if (result == 1) {
         cout << "maybe have solutions.";
     } else if (result == -1) {
@@ -211,6 +211,7 @@ void Demo::demoChineseRemainderTheorem() {
         cout << "* Partial canonical solution: " << chineseRemainder.getPartialCanonicalSolution(num1, num2) << endl;
         cout << "* General solution: " << chineseRemainder.getGeneralSolution(num1, num2) << endl;
         cout << "* General canonical solution: " << chineseRemainder.getGeneralCanonicalSolution(num1, num2);
+        getchar();
     }
     catch (NoSolutionsException &exception) {
         cout << exception.what();
@@ -219,7 +220,9 @@ void Demo::demoChineseRemainderTheorem() {
 }
 
 void Demo::demoCarmichaelNumbers() {
-    cout << endl << "****** Carmichael Numbers in range [a,b] ******" << endl << endl;
+    cout << endl << "****** Carmichael Numbers in range [a,b] ******" << endl;
+    cout << endl << " !!! NOTICE: For range with length greater than 10^6 this algorithm use more than 50 seconds." << endl;
+    cout << endl << "-----------------------------------------------" << endl << endl;
     long long a = inputBigInteger("a");
     long long b = inputBigInteger("b");
     int k = 20;
@@ -228,7 +231,9 @@ void Demo::demoCarmichaelNumbers() {
     cout << "Results:" << endl;
 
     int count = 0;
+    time_t start, end; // initialize timers
 
+    time(&start); // start timer
     for (int i = a; i <= b; ++i) {
         bool fermat = primalityTest.fermat(i, k);
         bool lehmann = primalityTest.lehmann(i, k);
@@ -238,10 +243,28 @@ void Demo::demoCarmichaelNumbers() {
             count++;
         }
     }
-    cout << endl << endl << "Find " << count << " numbers, with accuracy (1-2^-" << k << ").";
+    time(&end); // end timer
+    cout << endl << endl << "Found " << count << " numbers, with accuracy (1-2^-" << k << ").";
     cout << endl <<  "---------------------------";
+
+    double seconds = difftime(end, start);
+    cout << endl << endl << "[ Used time: " << seconds << " second(s) ]" << endl;
 }
 
+void Demo::demoHornerMethod() {
+    cout << endl << "****** Horner`s method ******" << endl << endl;
+    cout << "Enter x^y mod n." << endl << endl;
+
+    long long x = inputBigInteger("x");
+    long long y = inputBigInteger("y");
+    long long n = inputBigInteger("n");
+
+    cout << endl << "---------------------------" << endl;
+    long long result = ModularArithmetic::hornerPowVerbose(x, y, n);
+
+    cout << endl << endl << endl << ">>> ANSWER: " << x << "^" << y << " mod " << n << " = " << result << "." << endl;
+    cout << "---------------------------";
+}
 
 //
 //interactions with user
@@ -250,10 +273,11 @@ void Demo::showMainMenu() {
     clearOutput();
     cout << "****** Demonstration Menu ******" << endl << endl;
     cout << "1. Numbers demo" << endl;
-    cout << "2. Legendre symbol demo" << endl;
-    cout << "3. Jacobi symbol demo" << endl;
-    cout << "4. Primality tests demo" << endl;
-    cout << "5. Chinese Remainder Theorem demo" << endl;
+    cout << "2. Symbols demo" << endl;
+    cout << "3. Primality tests demo" << endl;
+    cout << "4. Carmichael numbers finding demo" << endl;
+    cout << "5. Horner`s method demo" << endl;
+    cout << "6. Chinese Remainder Theorem demo" << endl;
     cout << "0. Exit" << endl << endl;
 }
 
@@ -274,16 +298,20 @@ void Demo::handleInputInMainMenu() {
                 demoNumbers();
                 break;
             }
-            case LEGENDRE_DEMO: {
-                demoLegendre();
-                break;
-            }
-            case JACOBI_DEMO: {
-                demoJacobi();
+            case SYMBOLS_DEMO: {
+                handleInputInSymbolsMenu();
                 break;
             }
             case PRIMALITY_TESTS_DEMO: {
                 handleInputInPrimalityTestsMenu();
+                break;
+            }
+            case CARMICHAEL_NUMBERS_DEMO: {
+                demoCarmichaelNumbers();
+                break;
+            }
+            case HORNER_METHOD_DEMO:{
+                demoHornerMethod();
                 break;
             }
             case CHINESE_REMAINDER_THEOREM_DEMO: {
@@ -294,10 +322,48 @@ void Demo::handleInputInMainMenu() {
             default:
                 break;
         }
-        if (choice != PRIMALITY_TESTS_DEMO)
+        if (choice != PRIMALITY_TESTS_DEMO && choice != SYMBOLS_DEMO)
             pause();
     }
 
+}
+
+void Demo::showSymbolsMenu() {
+    clearOutput();
+    cout << "****** Symbols Menu ******" << endl << endl;
+    cout << "1. Legendre symbol demo" << endl;
+    cout << "2. Jacobi symbol demo" << endl;
+    cout << "0. Back" << endl << endl;
+}
+
+void Demo::handleInputInSymbolsMenu() {
+    int choice = -1;
+
+    while (choice != RETURN_FROM_SYMBOLS) {
+        showSymbolsMenu();
+        try {
+            choice = inputInteger("your choice");
+        }
+        catch (...) {
+            continue;
+        }
+        clearOutput();
+        switch (choice) {
+            case LEGENDRE_DEMO: {
+                demoLegendre();
+                break;
+            }
+            case JACOBI_DEMO: {
+                demoJacobi();
+                break;
+            }
+
+            default:
+                break;
+        }
+        if (choice != RETURN_FROM_SYMBOLS)
+            pause();
+    }
 }
 
 void Demo::showPrimalityTestsMenu() {
@@ -312,7 +378,7 @@ void Demo::showPrimalityTestsMenu() {
 void Demo::handleInputInPrimalityTestsMenu() {
     int choice = -1;
 
-    while (choice != BACK) {
+    while (choice != RETURN_FROM_PRIMALITY_TESTS) {
         showPrimalityTestsMenu();
         try {
             choice = inputInteger("your choice");
@@ -338,7 +404,7 @@ void Demo::handleInputInPrimalityTestsMenu() {
             default:
                 break;
         }
-        if (choice != BACK)
+        if (choice != RETURN_FROM_PRIMALITY_TESTS)
             pause();
     }
 }
