@@ -2,10 +2,20 @@
 // created by Vlad Savchuk on 22/09/20.
 //
 
-#include "demo/Demo.h"
+#include <iostream>
+#include <ConsoleInteraction.h>
+#include <Menu.h>
 
+using namespace std;
+
+void startDemo() {
+    ConsoleInteraction::clearOutput();
+    ConsoleInteraction::print("### This program developed by Vlad Savchuk.\n", ConsoleInteraction::BLUE);
+    ConsoleInteraction::pause();
+    Menu::handleInputInMainMenu();
+}
 
 int main() {
-    Demo::startDemo();
+    startDemo();
     return 0;
 }

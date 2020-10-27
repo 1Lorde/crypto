@@ -122,7 +122,7 @@ bool PrimalityTest::lehmann(long long n, int k) {
 
         long long result = ModularArithmetic::hornerPow(a, (n-1)/2, n);
 
-        if (abs(result) != 1 and result != n-1)
+        if (abs(result) != 1 && result != n-1)
             return false;
     }
 
@@ -139,7 +139,7 @@ bool PrimalityTest::lehmannVerbose(long long int n, int k) {
 
         long long result = ModularArithmetic::hornerPow(a, (n-1)/2, n);
 
-        if (abs(result) != 1 and result != n-1)
+        if (abs(result) != 1 && result != n-1)
             return false;
     }
     cout << n << " is prime with accuracy (1-2^-k) = " << (1 - pow(2, -k)) << "." << endl << endl;

@@ -138,7 +138,7 @@ long long ModularArithmetic::hornerPow(long long x, long long y, long long mod) 
     string power = decimalToBinary(y);
     reverse(power.begin(), power.end());
 
-    long squares [power.length()];
+    long *squares = new long[power.length()];
     squares[0] = x;
 
     for (int i = 1; i < power.length(); ++i)
@@ -165,7 +165,7 @@ long long ModularArithmetic::hornerPowVerbose(long long x, long long y, long lon
     for (int i = 0; i < power.length(); ++i)
         cout << i << "\t";
 
-    long squares [power.length()];
+    long *squares = new long[power.length()];
     squares[0] = x;
     for (int i = 1; i < power.length(); ++i)
         squares[i] = unsignedMod(pow(squares[i-1], 2), mod);

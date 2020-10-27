@@ -6,81 +6,35 @@
 #include "../utils/PrimalityTest.h"
 #include "../utils/ChineseRemainderTheorem.h"
 #include "../exceptions/NoSolutionsException.h"
+#include "ConsoleInteraction.h"
+#include "Menu.h"
 #include <iostream>
+#include <ctime>
+#include <PrimeNumberUtils.h>
+#include <PrimeProbabilityResearh.h>
+#include <PrimeNumberGenerator.h>
 
 #ifdef _WIN_64
 #include <conio.h>
 #endif
 
 using namespace std;
+typedef ConsoleInteraction ci;
 
 PrimalityTest primalityTest;
 Symbols symbols;
 ChineseRemainderTheorem chineseRemainder;
 
-
-//clear console
-void clearOutput() {
-#ifdef _WIN64
-    system("cls");
-#endif
-
-#ifdef linux
-    system("clear");
-#endif
-}
-
-//wait for user input
-void pause() {
-#ifdef _WIN64
-    cout << endl << endl << "Press <ENTER> to continue..";
-    getch();
-#endif
-
-#ifdef linux
-    cout << endl << endl << "Press <ENTER> to continue..";
-    int ch = getchar();
-    while (ch != '\n')
-        ch = getchar();
-#endif
-}
-
-//handle 32 bit numbers input
-int inputInteger(string varName) {
-    string value;
-    cout << "Enter " << varName << " = ";
-    getline(cin, value);
-    return stoi(value);
-}
-
-//handle 64 bit numbers input
-long long inputBigInteger(string varName) {
-    string value;
-    cout << "Enter " << varName << " = ";
-    getline(cin, value);
-    return stoll(value);
-}
-
-//handle Number object input
-Number inputNumber(string varName) {
-    long long a, n;
-    cout << varName << "{" << endl;
-    cout << "\tEnter a = ";
-    cin >> a;
-    cout << "\tEnter n = ";
-    cin >> n;
-    cout << "}" << endl;
-    return {a, n};
-}
-
-
 //
 //functionality demonstration functions
 //
-void Demo::demoNumbers() {
-    cout << endl << "****** Number operations ******" << endl << endl;
-    Number num1 = inputNumber("num1");
-    Number num2 = inputNumber("num2");
+void Demo::demoBasicModOperations() {
+    ci::print("****** ");
+    ci::print("Number operations", Demo::demoHeaderColor);
+    ci::print(" ******\n\n");
+
+    Number num1 = ci::inputNumber("num1");
+    Number num2 = ci::inputNumber("num2");
 
     try {
         cout << "(a+b) mod n = " << num1 + num2 << endl;
@@ -103,9 +57,12 @@ void Demo::demoNumbers() {
 }
 
 void Demo::demoLegendre() {
-    cout << endl << "****** LEGENDRE symbol - L(a,p) ******" << endl << endl;
-    long a = inputBigInteger("a");
-    long p = inputBigInteger("p");
+    ci::print("****** ");
+    ci::print("LEGENDRE symbol - L(a,p)", Demo::demoHeaderColor);
+    ci::print(" ******\n\n");
+
+    long a = ci::inputBigInteger("a");
+    long p = ci::inputBigInteger("p");
 
     if (primalityTest.solovayStrassenVerbose(p, 20)) {
         long long result = symbols.legendreVerbose(a, p);
@@ -127,9 +84,12 @@ void Demo::demoLegendre() {
 }
 
 void Demo::demoJacobi() {
-    cout << endl << "****** JACOBI symbol - J(a,P) ******" << endl << endl;
-    long long a = inputBigInteger("a");
-    long long P = inputBigInteger("P");
+    ci::print("****** ");
+    ci::print("JACOBI symbol - J(a,P)", Demo::demoHeaderColor);
+    ci::print(" ******\n\n");
+
+    long long a = ci::inputBigInteger("a");
+    long long P = ci::inputBigInteger("P");
 
     long long result = symbols.jacobiVerbose(a, P);
 
@@ -147,9 +107,12 @@ void Demo::demoJacobi() {
 }
 
 void Demo::demoSolovayStrassenPrimalityTest() {
-    cout << endl << "****** Solovay–Strassen primality test ******" << endl << endl;
-    long long n = inputBigInteger("n");
-    int k = inputInteger("k");
+    ci::print("****** ");
+    ci::print("Solovay–Strassen primality test", Demo::demoHeaderColor);
+    ci::print(" ******\n\n");
+
+    long long n = ci::inputBigInteger("n");
+    int k = ci::inputInteger("k");
 
     cout << endl << "---------------------------" << endl;
     bool result = primalityTest.solovayStrassenVerbose(n, k);
@@ -163,9 +126,12 @@ void Demo::demoSolovayStrassenPrimalityTest() {
 }
 
 void Demo::demoFermatPrimalityTest() {
-    cout << endl << "****** Fermat primality test ******" << endl << endl;
-    long long n = inputBigInteger("n");
-    int k = inputInteger("k");
+    ci::print("****** ");
+    ci::print("Fermat primality test", Demo::demoHeaderColor);
+    ci::print(" ******\n\n");
+
+    long long n = ci::inputBigInteger("n");
+    int k = ci::inputInteger("k");
 
     cout << endl << "---------------------------" << endl;
     bool result = primalityTest.fermatVerbose(n, k);
@@ -179,9 +145,12 @@ void Demo::demoFermatPrimalityTest() {
 }
 
 void Demo::demoLehmannPrimalityTest() {
-    cout << endl << "****** Lehmann primality test ******" << endl << endl;
-    long long n = inputBigInteger("n");
-    int k = inputInteger("k");
+    ci::print("****** ");
+    ci::print("Lehmann primality test", Demo::demoHeaderColor);
+    ci::print(" ******\n\n");
+
+    long long n = ci::inputBigInteger("n");
+    int k = ci::inputInteger("k");
 
     cout << endl << "---------------------------" << endl;
     bool result = primalityTest.lehmannVerbose(n, k);
@@ -195,12 +164,15 @@ void Demo::demoLehmannPrimalityTest() {
 }
 
 void Demo::demoChineseRemainderTheorem() {
-    cout << endl << "****** Chinese Remainder Theorem ******" << endl << endl;
+    ci::print("****** ");
+    ci::print("Chinese Remainder Theorem", Demo::demoHeaderColor);
+    ci::print(" ******\n\n");
+
     cout << "x == x1 (mod n1)" << endl;
     cout << "x == x2 (mod n2)" << endl << endl;
 
-    Number num1 = inputNumber("num1");
-    Number num2 = inputNumber("num2");
+    Number num1 = ci::inputNumber("num1");
+    Number num2 = ci::inputNumber("num2");
 
     cout << endl << "Entered system of equations: " << endl << "x == " << num1 << endl << "x == " << num2 << endl;
 
@@ -220,11 +192,14 @@ void Demo::demoChineseRemainderTheorem() {
 }
 
 void Demo::demoCarmichaelNumbers() {
-    cout << endl << "****** Carmichael Numbers in range [a,b] ******" << endl;
+    ci::print("****** ");
+    ci::print("Carmichael Numbers in range [a,b]", Demo::demoHeaderColor);
+    ci::print(" ******\n\n");
     cout << endl << " !!! NOTICE: For range with length greater than 10^6 this algorithm use more than 50 seconds." << endl;
     cout << endl << "-----------------------------------------------" << endl << endl;
-    long long a = inputBigInteger("a");
-    long long b = inputBigInteger("b");
+
+    long long a = ci::inputBigInteger("a");
+    long long b = ci::inputBigInteger("b");
     int k = 20;
 
     cout << endl << "---------------------------" << endl;
@@ -234,7 +209,7 @@ void Demo::demoCarmichaelNumbers() {
     time_t start, end; // initialize timers
 
     time(&start); // start timer
-    for (int i = a; i <= b; ++i) {
+    for (long long i = a; i <= b; ++i) {
         bool fermat = primalityTest.fermat(i, k);
         bool lehmann = primalityTest.lehmann(i, k);
 
@@ -252,12 +227,14 @@ void Demo::demoCarmichaelNumbers() {
 }
 
 void Demo::demoHornerMethod() {
-    cout << endl << "****** Horner`s method ******" << endl << endl;
+    ci::print("****** ");
+    ci::print("Horner`s method", Demo::demoHeaderColor);
+    ci::print(" ******\n\n");
     cout << "Enter x^y mod n." << endl << endl;
 
-    long long x = inputBigInteger("x");
-    long long y = inputBigInteger("y");
-    long long n = inputBigInteger("n");
+    long long x = ci::inputBigInteger("x");
+    long long y = ci::inputBigInteger("y");
+    long long n = ci::inputBigInteger("n");
 
     cout << endl << "---------------------------" << endl;
     long long result = ModularArithmetic::hornerPowVerbose(x, y, n);
@@ -266,155 +243,120 @@ void Demo::demoHornerMethod() {
     cout << "---------------------------";
 }
 
-//
-//interactions with user
-//
-void Demo::showMainMenu() {
-    clearOutput();
-    cout << "****** Demonstration Menu ******" << endl << endl;
-    cout << "1. Numbers demo" << endl;
-    cout << "2. Symbols demo" << endl;
-    cout << "3. Primality tests demo" << endl;
-    cout << "4. Carmichael numbers finding demo" << endl;
-    cout << "5. Horner`s method demo" << endl;
-    cout << "6. Chinese Remainder Theorem demo" << endl;
-    cout << "0. Exit" << endl << endl;
+void Demo::demoEratostheneSieve() {
+    ci::print("****** ");
+    ci::print("Sieve of Eratosthenes", Demo::demoHeaderColor);
+    ci::print(" ******\n\n");
+
+    long long n = ci::inputBigInteger("range");
+
+    cout << endl << "---------------------------" << endl;
+    cout << "Primes:" << endl;
+    for (long long i : PrimeNumberGenerator::eratosthenesSieve(n))
+        cout << i << " ";
+   
+    cout << endl << "---------------------------";
 }
 
-void Demo::handleInputInMainMenu() {
-    int choice = -1;
+void Demo::demoFindSequenceNumberByPrime() {
+    ci::print("****** ");
+    ci::print("Prime`s sequence number", Demo::demoHeaderColor);
+    ci::print(" ******\n\n");
 
-    while (choice != EXIT) {
-        showMainMenu();
-        try {
-            choice = inputInteger("your choice");
-        }
-        catch (...) {
-            continue;
-        }
-        clearOutput();
-        switch (choice) {
-            case NUMBERS_DEMO: {
-                demoNumbers();
-                break;
-            }
-            case SYMBOLS_DEMO: {
-                handleInputInSymbolsMenu();
-                break;
-            }
-            case PRIMALITY_TESTS_DEMO: {
-                handleInputInPrimalityTestsMenu();
-                break;
-            }
-            case CARMICHAEL_NUMBERS_DEMO: {
-                demoCarmichaelNumbers();
-                break;
-            }
-            case HORNER_METHOD_DEMO:{
-                demoHornerMethod();
-                break;
-            }
-            case CHINESE_REMAINDER_THEOREM_DEMO: {
-                demoChineseRemainderTheorem();
-                break;
-            }
+    long long n = ci::inputBigInteger("prime");
 
-            default:
-                break;
-        }
-        if (choice != PRIMALITY_TESTS_DEMO && choice != SYMBOLS_DEMO)
-            pause();
+    if (!primalityTest.solovayStrassen(n, 20)){
+        cout << "Entered number isn`t prime!";
+        return;
     }
 
+    cout << endl << "---------------------------" << endl;
+    cout << "Sequence number: ";
+    cout << PrimeNumberUtils::getSequenceNumberOfPrime(n) << endl;
+
+    cout << endl << "---------------------------";
 }
 
-void Demo::showSymbolsMenu() {
-    clearOutput();
-    cout << "****** Symbols Menu ******" << endl << endl;
-    cout << "1. Legendre symbol demo" << endl;
-    cout << "2. Jacobi symbol demo" << endl;
-    cout << "0. Back" << endl << endl;
+void Demo::demoFindPrimeBySequenceNumber() {
+    ci::print("****** ");
+    ci::print("Find prime by sequence number demo", Demo::demoHeaderColor);
+    ci::print(" ******\n\n");
+
+    long long n = ci::inputBigInteger("sequence number");
+
+    cout << endl << "---------------------------" << endl;
+    cout << "Prime: " << PrimeNumberUtils::getPrimeBySeqNumber(n);
+    cout << endl << "---------------------------";
+
 }
 
-void Demo::handleInputInSymbolsMenu() {
-    int choice = -1;
+void Demo::demoFindNPrimes() {
+    ci::print("****** ");
+    ci::print("Find N prime numbers demo", Demo::demoHeaderColor);
+    ci::print(" ******\n\n");
 
-    while (choice != RETURN_FROM_SYMBOLS) {
-        showSymbolsMenu();
-        try {
-            choice = inputInteger("your choice");
-        }
-        catch (...) {
-            continue;
-        }
-        clearOutput();
-        switch (choice) {
-            case LEGENDRE_DEMO: {
-                demoLegendre();
-                break;
-            }
-            case JACOBI_DEMO: {
-                demoJacobi();
-                break;
-            }
+    long long n = ci::inputBigInteger("N");
 
-            default:
-                break;
-        }
-        if (choice != RETURN_FROM_SYMBOLS)
-            pause();
+    cout << endl << "---------------------------" << endl;
+    cout << "Primes: " << endl;
+    for (long long i : PrimeNumberUtils::findNPrimes(n)) {
+        cout << i << " ";
     }
+    cout << endl << "---------------------------";
 }
 
-void Demo::showPrimalityTestsMenu() {
-    clearOutput();
-    cout << "****** Primality Tests Menu ******" << endl << endl;
-    cout << "1. Solovay-Strassen demo" << endl;
-    cout << "2. Fermat demo" << endl;
-    cout << "3. Lehmann demo" << endl;
-    cout << "0. Back" << endl << endl;
-}
+void Demo::demoGoldbachConjecture() {
+    ci::print("****** ");
+    ci::print("Goldbach Conjecture demo", Demo::demoHeaderColor);
+    ci::print(" ******\n\n");
 
-void Demo::handleInputInPrimalityTestsMenu() {
-    int choice = -1;
+    long long n = ci::inputBigInteger("number");
 
-    while (choice != RETURN_FROM_PRIMALITY_TESTS) {
-        showPrimalityTestsMenu();
-        try {
-            choice = inputInteger("your choice");
-        }
-        catch (...) {
-            continue;
-        }
-        clearOutput();
-        switch (choice) {
-            case SOLOVAY_STRASSEN: {
-                demoSolovayStrassenPrimalityTest();
-                break;
-            }
-            case FERMAT: {
-                demoFermatPrimalityTest();
-                break;
-            }
-            case LEHMANN: {
-                demoLehmannPrimalityTest();
-                break;
-            }
-
-            default:
-                break;
-        }
-        if (choice != RETURN_FROM_PRIMALITY_TESTS)
-            pause();
+    if (n % 2 || n < 2) {
+        cout << "Entered number not even!";
+        return;
     }
+    
+
+    cout << endl << "---------------------------" << endl;
+    cout << "Result: " << n << " = " ;
+    for (long long i : PrimeNumberUtils::goldbachConjecture(n)) {
+        cout << i << " + ";
+    }
+    cout << "\b\b" << " " << endl;
+    cout << endl << "---------------------------";
 }
 
-void Demo::startDemo() {
-    clearOutput();
-    cout << "### This program developed by Vlad Savchuk." << endl;
-    pause();
-    handleInputInMainMenu();
+void Demo::demoLegendreConjecture() {
+    ci::print("****** ");
+    ci::print("Legendre Conjecture demo", Demo::demoHeaderColor);
+    ci::print(" ******\n\n");
+
+    long long n = ci::inputBigInteger("number");
+
+    cout << endl << "---------------------------" << endl;
+    cout << "Result: " << endl;
+    for (long long i : PrimeNumberUtils::legendreConjecture(n)) {
+        cout << i << " ";
+    }
+    cout << endl << "---------------------------";
 }
 
+void Demo::demoPrimeProbability() {
+    ci::print("****** ");
+    ci::print("Prime probability on range demo", Demo::demoHeaderColor);
+    ci::print(" ******\n\n");
 
+    int l0 = ci::inputInteger("length of each range");
+    int amount = ci::inputInteger("amount");
 
+    cout << endl << endl << "------------------------------------------------------" << endl;
+    PrimeProbabilityResearh::countPrimesInEachRange(l0, amount);
+    cout << endl << endl << "------------------------------------------------------" << endl;
+
+    PrimeProbabilityResearh::countPrimesInRange(l0, amount);
+    cout << endl << endl << "------------------------------------------------------" << endl;
+
+    PrimeProbabilityResearh::primeNumberChanceInEachRange(l0, amount);
+    cout << endl << "------------------------------------------------------";
+}

@@ -5,7 +5,7 @@
 #include "Symbols.h"
 
 /*
- *  Class that represents primality tests (only Solovay-Strassen yet).
+ *  Class that represents primality tests.
  *
  *  created by Vlad Savchuk on 25/09/20.
  */

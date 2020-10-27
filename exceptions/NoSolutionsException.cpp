@@ -5,5 +5,5 @@
 #include "NoSolutionsException.h"
 
 const char *NoSolutionsException::what() const noexcept {
-    return "\nSystem of equations don`t have any solutions.";
+    return "\nDon`t have any solutions.";
 }

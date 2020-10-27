@@ -29,4 +29,4 @@ add_executable(savchuk
         utils/PrimalityTest.h
         utils/Symbols.cpp
         utils/Symbols.h
-        main.cpp)
+        main.cpp utils/PrimeNumberGenerator.cpp utils/PrimeNumberGenerator.h utils/PrimeNumberUtils.cpp utils/PrimeNumberUtils.h utils/PrimeProbabilityResearh.cpp utils/PrimeProbabilityResearh.h "demo/ConsoleInteraction.cpp" "demo/ConsoleInteraction.h" demo/Menu.cpp demo/Menu.h utils/PrimeNumberGenerator.h)

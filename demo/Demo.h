@@ -1,6 +1,8 @@
 #ifndef SYMBOLS_DEMO_H
 #define SYMBOLS_DEMO_H
 
+#include "ConsoleInteraction.h"
+
 /*
  * Class represents functionality demonstration
  *
@@ -8,54 +10,11 @@
  */
 class Demo {
 private:
-    //enumeration for CLI menu
-    enum MainMenuEntries {
-        EXIT,
-        NUMBERS_DEMO,
-        SYMBOLS_DEMO,
-        PRIMALITY_TESTS_DEMO,
-        CARMICHAEL_NUMBERS_DEMO,
-        HORNER_METHOD_DEMO,
-        CHINESE_REMAINDER_THEOREM_DEMO,
-    };
-
-    enum SymbolsMenuEntries {
-        RETURN_FROM_SYMBOLS,
-        LEGENDRE_DEMO,
-        JACOBI_DEMO,
-    };
-
-    enum PrimalityTestsMenuEntries {
-        RETURN_FROM_PRIMALITY_TESTS,
-        SOLOVAY_STRASSEN,
-        FERMAT,
-        LEHMANN
-    };
+    static const ConsoleInteraction::Colors demoHeaderColor = ConsoleInteraction::BLUE;
 
 public:
-    //method-wrapper for handleInputInMainMenu()
-    static void startDemo();
-
-    //show Main menu with available demos in console
-    static void showMainMenu();
-
-    //show Symbols menu with available demos in console
-    static void showSymbolsMenu();
-
-    //show Primality tests menu with available demos in console
-    static void showPrimalityTestsMenu();
-
-    //handle user choice in Main menu and call specific demonstration function
-    static void handleInputInMainMenu();
-
-    //handle user choice in Symbols menu and call specific demonstration function
-    static void handleInputInSymbolsMenu();
-
-    //handle user choice in Primality tests menu and call specific demonstration function
-    static void handleInputInPrimalityTestsMenu();
-
     //demonstrate basic modulus operations with Numbers
-    static void demoNumbers();
+    static void demoBasicModOperations();
 
     //demonstrate Legendre symbol calculation
     static void demoLegendre();
@@ -75,11 +34,19 @@ public:
     //demonstrate Chinese Remainder Theorem
     static void demoChineseRemainderTheorem();
 
-    //find Carmichael Numbers in defined range
+    //demonstrate Carmichael Numbers in defined range
     static void demoCarmichaelNumbers();
 
-    //find big powers using Horner`s method
+    //demonstrate big powers using Horner`s method
     static void demoHornerMethod();
+    
+    static void demoEratostheneSieve();
+    static void demoFindNPrimes();
+    static void demoFindPrimeBySequenceNumber();
+    static void demoFindSequenceNumberByPrime();
+    static void demoGoldbachConjecture();
+    static void demoLegendreConjecture();
+    static void demoPrimeProbability();
 };
 
 
