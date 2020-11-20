@@ -13,6 +13,7 @@
 #include <PrimeNumberUtils.h>
 #include <PrimeProbabilityResearh.h>
 #include <PrimeNumberGenerator.h>
+#include <cmath>
 
 #ifdef _WIN_64
 #include <conio.h>
@@ -359,4 +360,36 @@ void Demo::demoPrimeProbability() {
 
     PrimeProbabilityResearh::primeNumberChanceInEachRange(l0, amount);
     cout << endl << "------------------------------------------------------";
+}
+
+void Demo::demoEllipticCurveCoefficients() {
+    ci::print("****** ");
+    ci::print("Elliptic curve coefficients demo", Demo::demoHeaderColor);
+    ci::print(" ******\n\n");
+
+    ci::print("y^2 = x^3 + Ax + B.\n\n");
+
+    int p = ci::inputInteger("p");
+    int Fx;
+    for (int a = 1; a < p; a++){
+        for (int b = 1; b < p; b++){
+            int n = 1;
+            for (int x = 0; x < p; x++){
+                Fx = pow(x, 3) + a * x + b;
+                Fx = ModularArithmetic::unsignedMod(Fx, p);
+
+                if (symbols.legendre(Fx, p) == 1) {
+                    if (Fx == 1)
+                        n++;
+                    else
+                        n += 2;
+                }
+
+            }
+
+            if (primalityTest.solovayStrassen(n, 20)){
+                cout << "For A: " << a << " and B: " << b << "  ==>  n: " << n << "\n";
+            }
+        }
+    }
 }

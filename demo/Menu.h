@@ -43,7 +43,8 @@ private:
         FIND_PRIMES_IN_RANGE_DEMO,
         GOLDBACH_CONJECTURE_DEMO,
         LEGENDRE_CONJECTURE_DEMO,
-        PRIME_PROBABILITY_DEMO
+        PRIME_PROBABILITY_DEMO,
+        ELLIPTIC_CURVE_COEFFICIENTS_DEMO
     };
 
     static const ConsoleInteraction::Colors headerColor = ConsoleInteraction::GREY;

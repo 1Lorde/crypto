@@ -47,6 +47,7 @@ public:
     static void demoGoldbachConjecture();
     static void demoLegendreConjecture();
     static void demoPrimeProbability();
+    static void demoEllipticCurveCoefficients();
 };
 
 
