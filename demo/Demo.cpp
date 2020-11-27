@@ -15,7 +15,7 @@
 #include <PrimeNumberGenerator.h>
 #include <cmath>
 
-#ifdef _WIN_64
+#ifdef _WIN32
 #include <conio.h>
 #endif
 
@@ -378,13 +378,13 @@ void Demo::demoEllipticCurveCoefficients() {
                 Fx = pow(x, 3) + a * x + b;
                 Fx = ModularArithmetic::unsignedMod(Fx, p);
 
-                if (symbols.legendre(Fx, p) == 1) {
-                    if (Fx == 1)
-                        n++;
-                    else
-                        n += 2;
+                int L = symbols.legendre(Fx, p);
+                if (L == 0) {
+                    n++;
                 }
-
+                if (L == 1) {
+                    n += 2;
+                }
             }
 
             if (primalityTest.solovayStrassen(n, 20)){

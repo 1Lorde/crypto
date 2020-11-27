@@ -27,7 +27,7 @@ void ConsoleInteraction::print(string text){
 }
 
 void ConsoleInteraction::clearOutput() {
-#ifdef _WIN64
+#ifdef _WIN32
     system("cls");
 #endif
 
@@ -37,9 +37,11 @@ void ConsoleInteraction::clearOutput() {
 }
 
 void ConsoleInteraction::pause() {
-#ifdef _WIN64
+#ifdef _WIN32
     print("\n\nPress <ENTER> to continue..");
-    getch();
+    int ch = getchar();
+    while (ch != '\n')
+        ch = getchar();
 #endif
 
 #ifdef linux

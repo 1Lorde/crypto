@@ -13,7 +13,7 @@ using namespace std;
 void PrimeProbabilityResearh::countPrimesInEachRange(int lengthOfRange, int times) {
     PrimalityTest primalityTest;
 
-#ifdef _WIN_64
+#ifdef _WIN_32
     ofstream file("../../../demo/gnuplot/data/countPrimesInEachRange.dat");
 #endif
 #ifdef linux
@@ -46,7 +46,7 @@ void PrimeProbabilityResearh::countPrimesInEachRange(int lengthOfRange, int time
 void PrimeProbabilityResearh::countPrimesInRange(int lengthOfRange, int times) {
     PrimalityTest primalityTest;
 
-#ifdef _WIN_64
+#ifdef _WIN_32
     ofstream file("../../../demo/gnuplot/data/countPrimesInRange.dat");
 #endif
 #ifdef linux
@@ -79,7 +79,7 @@ void PrimeProbabilityResearh::countPrimesInRange(int lengthOfRange, int times) {
 void PrimeProbabilityResearh::primeNumberChanceInEachRange(int lengthOfRange, int times) {
     PrimalityTest primalityTest;
 
-#ifdef _WIN_64
+#ifdef _WIN_32
     ofstream file("../../../demo/gnuplot/data/primeNumberChanceInEachRange.dat");
 #endif
 #ifdef linux
