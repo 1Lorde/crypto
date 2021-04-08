@@ -48,6 +48,7 @@ public:
     static void demoLegendreConjecture();
     static void demoPrimeProbability();
     static void demoEllipticCurveCoefficients();
+    static void demoEllipticCurvePointsAddition();
 };
 
 

@@ -58,7 +58,7 @@ std::list<long> PrimeNumberUtils::goldbachConjecture(long number) {
     list<long> summands;
     long i = 2;
 
-    for (long j = number-i; j > 2; j--)
+    for (long j = number-i; j >= 2; j--)
     {
         if (primalityTest.solovayStrassen(i, 20) &&
             primalityTest.solovayStrassen(j, 20)) {

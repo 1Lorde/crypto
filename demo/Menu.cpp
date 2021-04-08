@@ -170,6 +170,7 @@ void Menu::showUtilityMenu() {
     ci::print("5. Legendre conjecture\n", entry2Color);
     ci::print("6. Prime probability on range\n", entry2Color);
     ci::print("7. Elliptic curve coefficients\n", entry2Color);
+    ci::print("8. Elliptic curve's points addition\n", entry2Color);
     ci::print("0. Back\n\n", entry2Color);
 }
 
@@ -212,6 +213,10 @@ void Menu::handleInputInUtilityMenu() {
             }
             case ELLIPTIC_CURVE_COEFFICIENTS_DEMO: {
                 Demo::demoEllipticCurveCoefficients();
+                break;
+            }
+            case ELLIPTIC_CURVE_POINTS_ADDITION: {
+                Demo::demoEllipticCurvePointsAddition();
                 break;
             }
             default:

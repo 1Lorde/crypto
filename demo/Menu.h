@@ -44,7 +44,8 @@ private:
         GOLDBACH_CONJECTURE_DEMO,
         LEGENDRE_CONJECTURE_DEMO,
         PRIME_PROBABILITY_DEMO,
-        ELLIPTIC_CURVE_COEFFICIENTS_DEMO
+        ELLIPTIC_CURVE_COEFFICIENTS_DEMO,
+        ELLIPTIC_CURVE_POINTS_ADDITION
     };
 
     static const ConsoleInteraction::Colors headerColor = ConsoleInteraction::GREY;

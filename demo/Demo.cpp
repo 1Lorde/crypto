@@ -7,13 +7,13 @@
 #include "../utils/ChineseRemainderTheorem.h"
 #include "../exceptions/NoSolutionsException.h"
 #include "ConsoleInteraction.h"
-#include "Menu.h"
 #include <iostream>
 #include <ctime>
 #include <PrimeNumberUtils.h>
 #include <PrimeProbabilityResearh.h>
 #include <PrimeNumberGenerator.h>
-#include <cmath>
+#include <EllipticCurveUtils.h>
+#include <Point.h>
 
 #ifdef _WIN32
 #include <conio.h>
@@ -25,6 +25,7 @@ typedef ConsoleInteraction ci;
 PrimalityTest primalityTest;
 Symbols symbols;
 ChineseRemainderTheorem chineseRemainder;
+EllipticCurveUtils ellipticCurveUtils;
 
 //
 //functionality demonstration functions
@@ -168,6 +169,11 @@ void Demo::demoChineseRemainderTheorem() {
     ci::print("****** ");
     ci::print("Chinese Remainder Theorem", Demo::demoHeaderColor);
     ci::print(" ******\n\n");
+    ci::print("   || Chinese remainder theorem states that if one knows the remainders\n"
+              "   || of the Euclidean division of an integer n by several integers,\n"
+              "   || then one can determine uniquely the remainder of the division of n\n"
+              "   || by the product of these integers, under the condition that the divisors\n"
+              "   || are pairwise coprime.\n\n");
 
     cout << "x == x1 (mod n1)" << endl;
     cout << "x == x2 (mod n2)" << endl << endl;
@@ -196,7 +202,13 @@ void Demo::demoCarmichaelNumbers() {
     ci::print("****** ");
     ci::print("Carmichael Numbers in range [a,b]", Demo::demoHeaderColor);
     ci::print(" ******\n\n");
-    cout << endl << " !!! NOTICE: For range with length greater than 10^6 this algorithm use more than 50 seconds." << endl;
+    ci::print("   || Carmichael number is a composite number n which satisfies\n"
+              "   || the modular arithmetic congruence relation: b^(n-1) == 1 (mod n)\n"
+              "   || for all integers b which are relatively prime to n.\n"
+              "   || Carmichael numbers are also called Fermat pseudoprimes or absolute Fermat pseudoprimes.\n\n");
+
+    cout << endl << " !!! NOTICE: For range with length greater than 10^6 this algorithm use a lot of time."
+         << endl;
     cout << endl << "-----------------------------------------------" << endl << endl;
 
     long long a = ci::inputBigInteger("a");
@@ -214,14 +226,14 @@ void Demo::demoCarmichaelNumbers() {
         bool fermat = primalityTest.fermat(i, k);
         bool lehmann = primalityTest.lehmann(i, k);
 
-        if (fermat != lehmann){
-            cout << i << " " ;
+        if (fermat != lehmann) {
+            cout << i << " ";
             count++;
         }
     }
     time(&end); // end timer
     cout << endl << endl << "Found " << count << " numbers, with accuracy (1-2^-" << k << ").";
-    cout << endl <<  "---------------------------";
+    cout << endl << "---------------------------";
 
     double seconds = difftime(end, start);
     cout << endl << endl << "[ Used time: " << seconds << " second(s) ]" << endl;
@@ -248,6 +260,8 @@ void Demo::demoEratostheneSieve() {
     ci::print("****** ");
     ci::print("Sieve of Eratosthenes", Demo::demoHeaderColor);
     ci::print(" ******\n\n");
+    ci::print("   || Sieve of Eratosthenes is an ancient algorithm for finding\n"
+              "   || all prime numbers up to any given limit.\n\n");
 
     long long n = ci::inputBigInteger("range");
 
@@ -255,7 +269,7 @@ void Demo::demoEratostheneSieve() {
     cout << "Primes:" << endl;
     for (long long i : PrimeNumberGenerator::eratosthenesSieve(n))
         cout << i << " ";
-   
+
     cout << endl << "---------------------------";
 }
 
@@ -266,7 +280,7 @@ void Demo::demoFindSequenceNumberByPrime() {
 
     long long n = ci::inputBigInteger("prime");
 
-    if (!primalityTest.solovayStrassen(n, 20)){
+    if (!primalityTest.solovayStrassen(n, 20)) {
         cout << "Entered number isn`t prime!";
         return;
     }
@@ -310,6 +324,8 @@ void Demo::demoGoldbachConjecture() {
     ci::print("****** ");
     ci::print("Goldbach Conjecture demo", Demo::demoHeaderColor);
     ci::print(" ******\n\n");
+    ci::print("   || Goldbach conjecture states that every even whole number greater than 2\n"
+              "   || is the sum of two prime numbers.\n\n");
 
     long long n = ci::inputBigInteger("number");
 
@@ -317,10 +333,10 @@ void Demo::demoGoldbachConjecture() {
         cout << "Entered number not even!";
         return;
     }
-    
+
 
     cout << endl << "---------------------------" << endl;
-    cout << "Result: " << n << " = " ;
+    cout << "Result: " << n << " = ";
     for (long long i : PrimeNumberUtils::goldbachConjecture(n)) {
         cout << i << " + ";
     }
@@ -332,8 +348,10 @@ void Demo::demoLegendreConjecture() {
     ci::print("****** ");
     ci::print("Legendre Conjecture demo", Demo::demoHeaderColor);
     ci::print(" ******\n\n");
+    ci::print("   || Legendre's conjecture states that there is a prime number\n"
+              "   || between n2 and (n + 1)^2 for every positive integer n.\n\n");
 
-    long long n = ci::inputBigInteger("number");
+    long long n = ci::inputBigInteger("n");
 
     cout << endl << "---------------------------" << endl;
     cout << "Result: " << endl;
@@ -366,30 +384,58 @@ void Demo::demoEllipticCurveCoefficients() {
     ci::print("****** ");
     ci::print("Elliptic curve coefficients demo", Demo::demoHeaderColor);
     ci::print(" ******\n\n");
+    ci::print("   || Finds elliptic curve coefficients, which has prime\n"
+              "   || number of points.\n\n");
 
     ci::print("y^2 = x^3 + Ax + B.\n\n");
 
     int p = ci::inputInteger("p");
-    int Fx;
-    for (int a = 1; a < p; a++){
-        for (int b = 1; b < p; b++){
-            int n = 1;
-            for (int x = 0; x < p; x++){
-                Fx = pow(x, 3) + a * x + b;
-                Fx = ModularArithmetic::unsignedMod(Fx, p);
+    list<EllipticCurve> curves = ellipticCurveUtils.findCoefficientsWithPrimeCountOfPoints(p);
 
-                int L = symbols.legendre(Fx, p);
-                if (L == 0) {
-                    n++;
-                }
-                if (L == 1) {
-                    n += 2;
-                }
-            }
+    for (auto curve : curves) {
+        cout << "For A: " << curve.getA() << " and B: " << curve.getB() << "  ==>  n: " << curve.getP() << "\n";
+    }
+}
 
-            if (primalityTest.solovayStrassen(n, 20)){
-                cout << "For A: " << a << " and B: " << b << "  ==>  n: " << n << "\n";
+void Demo::demoEllipticCurvePointsAddition() {
+    ci::print("****** ");
+    ci::print("Elliptic curve`s points addition demo", Demo::demoHeaderColor);
+    ci::print(" ******\n\n");
+
+    ci::print("y^2 = x^3 + Ax + B.\n");
+
+    int A = ci::inputInteger("A");
+    int B = ci::inputInteger("B");
+    int p = ci::inputInteger("p");
+
+    ci::print("\nP = (Xp, Yp).\n");
+    int Xp = ci::inputInteger("Xp");
+    int Yp = ci::inputInteger("Yp");
+
+    ci::print("\nQ = (Xq, Yq).\n");
+    int Xq = ci::inputInteger("Xq");
+    int Yq = ci::inputInteger("Yq");
+
+    EllipticCurve curve = EllipticCurve(A, B, p);
+    Point P1 = Point("P", Xp, Yp, &curve);
+    Point P2 = Point("P", Xq, Yq, &curve);
+
+    ci::print("\n\nRESULT:\n");
+
+    if (P1.isOnEllipticCurve(curve)) {
+        if (P2.isOnEllipticCurve(curve)) {
+            Point R2 = P1 + P2;
+            cout << endl << R2;
+
+            if (R2.isOnEllipticCurve(curve)) {
+                cout << endl << "R is on elliptic curve " << curve << ".";
+            } else {
+                cout << endl << "R is not on elliptic curve " << curve << ".";
             }
+        } else {
+            cout << endl << "P2 is not on elliptic curve " << curve << ".";
         }
+    } else {
+        cout << endl << "P1 is not on elliptic curve " << curve << ".";
     }
 }
